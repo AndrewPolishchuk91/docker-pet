@@ -8,5 +8,5 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Hello
-        run: echo "Hello from GitHub Actions!"
+      - name: Check Docker version
+        run: docker --version
