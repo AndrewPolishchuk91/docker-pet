@@ -6,7 +6,52 @@ on:
     branches: [main]
 
 jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.16.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: |
+            backend/pnpm-lock.yaml
+            frontend/pnpm-lock.yaml
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: pnpm install --frozen-lockfile
+
+      - name: Backend lint
+        working-directory: backend
+        run: pnpm lint
+
+      - name: Backend tests
+        working-directory: backend
+        run: pnpm test
+
+      - name: Backend build
+        working-directory: backend
+        run: pnpm build
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: pnpm install --frozen-lockfile
+
+      - name: Frontend lint
+        working-directory: frontend
+        run: pnpm lint
+
   build:
+    needs: quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
