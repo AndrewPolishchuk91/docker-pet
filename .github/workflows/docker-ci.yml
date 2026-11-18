@@ -17,11 +17,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build backend image
-        run: docker build -t andrewpolishchuk91/multi-service-pet-backend:latest ./backend
+      - name: Push backend image
+        run: |
+          docker push andrewpolishchuk91/multi-service-pet-backend:latest
+          docker push andrewpolishchuk91/multi-service-pet-backend:${GITHUB_SHA}
 
-      - name: Build frontend image
-        run: docker build -t andrewpolishchuk91/multi-service-pet-frontend:latest ./frontend
+      - name: Push frontend image
+        run: |
+          docker push andrewpolishchuk91/multi-service-pet-frontend:latest
+          docker push andrewpolishchuk91/multi-service-pet-frontend:${GITHUB_SHA}
 
       - name: Push backend image
         run: docker push andrewpolishchuk91/multi-service-pet-backend:latest
