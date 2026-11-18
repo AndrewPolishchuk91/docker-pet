@@ -1,3 +1,4 @@
+
 name: Docker CI
 
 on:
@@ -17,6 +18,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Build backend image
+        run: |
+          docker build \
+            -t andrewpolishchuk91/multi-service-pet-backend:latest \
+            -t andrewpolishchuk91/multi-service-pet-backend:${GITHUB_SHA} \
+            ./backend
+
+      - name: Build frontend image
+        run: |
+          docker build \
+            -t andrewpolishchuk91/multi-service-pet-frontend:latest \
+            -t andrewpolishchuk91/multi-service-pet-frontend:${GITHUB_SHA} \
+            ./frontend
+
       - name: Push backend image
         run: |
           docker push andrewpolishchuk91/multi-service-pet-backend:latest
@@ -26,10 +41,3 @@ jobs:
         run: |
           docker push andrewpolishchuk91/multi-service-pet-frontend:latest
           docker push andrewpolishchuk91/multi-service-pet-frontend:${GITHUB_SHA}
-
-      - name: Push backend image
-        run: docker push andrewpolishchuk91/multi-service-pet-backend:latest
-
-      - name: Push frontend image
-        run: docker push andrewpolishchuk91/multi-service-pet-frontend:latest
-    
