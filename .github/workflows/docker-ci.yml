@@ -8,14 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Check Docker version
-        run: docker --version
-
-      - name: List project files
-        run: ls -la
-
       - name: Build backend image
         run: docker build -t multi-service-pet-backend ./backend
+        
+      - name: Build frontend image
+        run: docker build -t multi-service-pet-frontend ./frontend
+    
