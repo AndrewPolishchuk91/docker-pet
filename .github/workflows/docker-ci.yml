@@ -16,3 +16,6 @@ jobs:
 
       - name: List project files
         run: ls -la
+
+      - name: Build backend image
+        run: docker build -t multi-service-pet-backend ./backend
